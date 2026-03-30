@@ -2,6 +2,7 @@ import { Home, Link2, PlusCircle, List, Settings, LogOut } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
+import logo from '@/assets/logo.png';
 import {
   Sidebar,
   SidebarContent,
