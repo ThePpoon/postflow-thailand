@@ -14,7 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      connected_accounts: {
+        Row: {
+          access_token: string | null
+          avatar_url: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          platform: string
+          platform_user_id: string | null
+          token_expires_at: string | null
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          platform: string
+          platform_user_id?: string | null
+          token_expires_at?: string | null
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          platform?: string
+          platform_user_id?: string | null
+          token_expires_at?: string | null
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      posts: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          platforms: string[] | null
+          published_at: string | null
+          scheduled_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          platforms?: string[] | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          platforms?: string[] | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
