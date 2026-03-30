@@ -97,7 +97,7 @@ export default function CreatePostPage() {
       platforms: selectedAccounts,
       scheduled_at: scheduledAt,
       status: postNow ? 'published' : 'scheduled',
-    } as any);
+    });
 
     setSubmitting(false);
     if (!error) {
