@@ -57,9 +57,7 @@ export default function SignupPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">P2</span>
-          </div>
+          <img src={logo} alt="Post2Flow" className="mx-auto mb-3 h-12 w-12 rounded-lg" />
           <h1 className="text-2xl font-bold text-foreground">สมัครสมาชิก Post2Flow</h1>
           <p className="mt-1 text-sm text-muted-foreground">เริ่มจัดการโซเชียลมีเดียของคุณวันนี้</p>
         </div>
