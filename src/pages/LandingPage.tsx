@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Link2, Edit3, Clock, Send } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 const features = [
   {
@@ -31,9 +32,7 @@ export default function LandingPage() {
       {/* Navbar */}
       <nav className="flex items-center justify-between px-6 py-4 md:px-12">
         <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">P2</span>
-          </div>
+          <img src={logo} alt="Post2Flow" className="h-9 w-9 rounded-lg" />
           <span className="text-xl font-bold text-foreground">Post2Flow</span>
         </div>
         <Link to="/login">

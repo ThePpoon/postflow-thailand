@@ -2,6 +2,7 @@ import { Home, Link2, PlusCircle, List, Settings, LogOut } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
+import logo from '@/assets/logo.png';
 import {
   Sidebar,
   SidebarContent,
@@ -38,9 +39,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <div className="flex items-center gap-2 px-4 py-5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">P2</span>
-          </div>
+          <img src={logo} alt="Post2Flow" className="h-8 w-8 rounded-lg" />
           {!collapsed && (
             <span className="text-lg font-bold text-foreground">Post2Flow</span>
           )}
