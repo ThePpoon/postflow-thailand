@@ -13,6 +13,7 @@ import AccountsPage from "./pages/AccountsPage";
 import CreatePostPage from "./pages/CreatePostPage";
 import PostsPage from "./pages/PostsPage";
 import SettingsPage from "./pages/SettingsPage";
+import BillingPage from "./pages/BillingPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/posts/new" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
             <Route path="/posts" element={<ProtectedRoute><PostsPage /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+            <Route path="/billing" element={<ProtectedRoute><BillingPage /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

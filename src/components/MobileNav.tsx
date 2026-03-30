@@ -6,7 +6,7 @@ const navItems = [
   { title: 'บัญชี', url: '/accounts', icon: Link2 },
   { title: 'สร้าง', url: '/posts/new', icon: PlusCircle },
   { title: 'โพสต์', url: '/posts', icon: List },
-  { title: 'ตั้งค่า', url: '/settings', icon: Settings },
+  { title: 'Config', url: '/settings', icon: Settings },
 ];
 
 export function MobileNav() {
