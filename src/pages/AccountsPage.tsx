@@ -47,7 +47,10 @@ export default function AccountsPage() {
       try {
         const res = await fetch('https://2ee2-2001-fb1-48-e162-6010-228a-85e4-8485.ngrok-free.app/webhook/oauth/meta/start', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true',
+          },
           body: JSON.stringify({ user_id: user?.id }),
         });
         const data = await res.json();
