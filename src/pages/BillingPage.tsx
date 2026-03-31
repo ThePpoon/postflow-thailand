@@ -45,7 +45,7 @@ export default function BillingPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-4xl animate-fade-in space-y-6">
+      <div className="max-w-4xl mx-auto animate-fade-in space-y-6">
         <ConfigTabs />
 
         <div className="text-center space-y-2">
