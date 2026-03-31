@@ -1,55 +1,130 @@
+import { useState } from 'react';
 import { AppLayout } from '@/components/AppLayout';
 import { ConfigTabs } from '@/components/ConfigTabs';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Check } from 'lucide-react';
+
+const plans = [
+  {
+    name: 'Creator',
+    monthlyPrice: 899,
+    yearlyPrice: 799,
+    description: 'สำหรับครีเอเตอร์และธุรกิจขนาดเล็ก',
+    features: [
+      'เชื่อมต่อได้ 15 บัญชี',
+      'โพสต์ไม่จำกัด',
+      'ตั้งเวลาโพสต์',
+      'Carousel Post',
+      'Video Post',
+      'แบบร่างไม่จำกัด',
+    ],
+    current: true,
+  },
+  {
+    name: 'Pro',
+    monthlyPrice: 1499,
+    yearlyPrice: 1299,
+    description: 'สำหรับทีมและเอเจนซี่',
+    features: [
+      'บัญชีไม่จำกัด',
+      'ทุกอย่างใน Creator',
+      'วิเคราะห์ขั้นสูง',
+      'จัดการทีม',
+      'Priority Support',
+      'API Access',
+    ],
+    current: false,
+    popular: true,
+  },
+];
 
 export default function BillingPage() {
+  const [yearly, setYearly] = useState(false);
+
   return (
     <AppLayout>
-      <div className="max-w-3xl animate-fade-in space-y-6">
+      <div className="max-w-4xl animate-fade-in space-y-6">
         <ConfigTabs />
 
-        <Card className="border-border bg-card">
-          <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
-            <div className="space-y-2">
-              <CardTitle className="text-base">แผนปัจจุบัน</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                ตอนนี้บัญชีของคุณอยู่ในแพ็กเกจเริ่มต้นสำหรับการใช้งาน Post2Flow
-              </p>
-            </div>
-            <Badge variant="secondary" className="bg-primary/15 text-primary hover:bg-primary/15">
-              Free
-            </Badge>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="rounded-xl border border-border bg-secondary/40 p-4">
-              <p className="text-2xl font-semibold text-foreground">฿0/เดือน</p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                เชื่อมต่อได้ 3 บัญชี และสร้างโพสต์ได้ 30 ครั้งต่อเดือน
-              </p>
-            </div>
-            <Button variant="outline" disabled>
-              อัปเกรดเร็ว ๆ นี้
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-bold text-foreground">เลือกแพ็กเกจ</h2>
+          <p className="text-muted-foreground">เลือกแผนที่เหมาะกับการใช้งานของคุณ</p>
+        </div>
 
-        <Card className="border-border bg-card">
-          <CardHeader>
-            <CardTitle className="text-base">สิทธิ์การใช้งาน</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm text-muted-foreground">
-            <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-secondary/30 px-4 py-3">
-              <span>บัญชีโซเชียลที่เชื่อมต่อได้</span>
-              <span className="font-medium text-foreground">3 บัญชี</span>
-            </div>
-            <div className="flex items-center justify-between gap-4 rounded-lg border border-border bg-secondary/30 px-4 py-3">
-              <span>จำนวนโพสต์ต่อเดือน</span>
-              <span className="font-medium text-foreground">30 โพสต์</span>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Toggle */}
+        <div className="flex items-center justify-center gap-3">
+          <span className={`text-sm font-medium ${!yearly ? 'text-foreground' : 'text-muted-foreground'}`}>
+            รายเดือน
+          </span>
+          <button
+            onClick={() => setYearly(!yearly)}
+            className={`relative h-7 w-12 rounded-full transition-colors ${yearly ? 'bg-primary' : 'bg-secondary'}`}
+          >
+            <span
+              className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-foreground transition-transform ${yearly ? 'translate-x-5' : ''}`}
+            />
+          </button>
+          <span className={`text-sm font-medium ${yearly ? 'text-foreground' : 'text-muted-foreground'}`}>
+            รายปี
+          </span>
+          {yearly && (
+            <Badge className="bg-primary/15 text-primary hover:bg-primary/15 text-xs">
+              ฟรี 1 เดือน
+            </Badge>
+          )}
+        </div>
+
+        {/* Plans */}
+        <div className="grid gap-6 md:grid-cols-2">
+          {plans.map((plan) => (
+            <Card
+              key={plan.name}
+              className={`relative border-border bg-card ${plan.popular ? 'ring-2 ring-primary' : ''}`}
+            >
+              {plan.popular && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <Badge className="bg-primary text-primary-foreground">ยอดนิยม</Badge>
+                </div>
+              )}
+              <CardHeader>
+                <CardTitle className="text-lg">{plan.name}</CardTitle>
+                <p className="text-sm text-muted-foreground">{plan.description}</p>
+                <div className="pt-2">
+                  <span className="text-3xl font-bold text-foreground">
+                    ฿{yearly ? plan.yearlyPrice.toLocaleString() : plan.monthlyPrice.toLocaleString()}
+                  </span>
+                  <span className="text-muted-foreground">/เดือน</span>
+                  {yearly && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      เรียกเก็บ ฿{(plan.yearlyPrice * 12).toLocaleString()}/ปี
+                    </p>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <ul className="space-y-2.5">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Check className="h-4 w-4 text-primary shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                {plan.current ? (
+                  <Button variant="outline" className="w-full" disabled>
+                    แผนปัจจุบัน
+                  </Button>
+                ) : (
+                  <Button className="w-full">
+                    เริ่มต้นใช้งาน →
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </AppLayout>
   );
