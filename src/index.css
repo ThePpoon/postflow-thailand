@@ -60,4 +60,25 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Prompt', 'Noto Sans Thai', 'Kanit', sans-serif;
   }
+
+  /* Dark scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(0 0% 7%);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(0 0% 20%);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(0 0% 30%);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(0 0% 20%) hsl(0 0% 7%);
+  }
 }
