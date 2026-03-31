@@ -43,13 +43,19 @@ export default function AccountsPage() {
   }, [user]);
 
   const handleConnect = async (platform: string) => {
-    if (platform === 'facebook' || platform === 'instagram') {
+    if (platform === 'facebook' || platform === 'facebook_page' || platform === 'instagram') {
       try {
-        await fetch('http://localhost:5679/webhook/oauth/meta/start', {
+        const res = await fetch('https://2ee2-2001-fb1-48-e162-6010-228a-85e4-8485.ngrok-free.app/webhook/oauth/meta/start', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user_id: user?.id }),
         });
+        const data = await res.json();
+        if (data.auth_url) {
+          window.location.href = data.auth_url;
+        } else {
+          alert('ไม่สามารถเชื่อมต่อได้ กรุณาลองอีกครั้ง');
+        }
       } catch {
         alert('ไม่สามารถเชื่อมต่อได้ กรุณาลองอีกครั้ง');
       }
