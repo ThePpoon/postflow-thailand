@@ -1,39 +1,45 @@
 
 
-## Plan: เพิ่ม Google Login, ลืมรหัสผ่าน ในหน้า Login/Signup
+## Plan: แก้บัค outline เขียว, ลบ PromoBanner, ปรับ Billing เป็นหน้า Pricing, ปรับ Settings/Profile
 
-### ข้อจำกัดสำคัญ: Facebook Login
-Facebook OAuth **ไม่รองรับ**ใน Lovable Cloud ในตอนนี้ รองรับเฉพาะ **Google** และ **Apple** เท่านั้น จึงจะเพิ่มเฉพาะ Google Login ให้
+### 1. แก้บัค green outline
+- ใน `src/index.css` ค่า `--ring: 145 100% 39%` ทำให้ focus ring เป็นสีเขียว
+- แก้ `--ring` เป็นสีที่ไม่เด่น หรือเพิ่ม global CSS `*:focus { outline: none }` ตามความเหมาะสม
+- ตรวจสอบ component ที่มี `focus-visible:ring` แล้วปรับ
 
-### สิ่งที่จะทำ
+### 2. ลบ PromoBanner
+- ลบการ import และใช้งาน `<PromoBanner />` ออกจาก `src/components/AppLayout.tsx`
+- ลบไฟล์ `src/components/PromoBanner.tsx`
 
-**1. เปิดใช้ Google OAuth**
-- ใช้ Configure Social Auth tool เพื่อสร้าง lovable module สำหรับ Google sign-in
-- ใช้ `lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin })`
+### 3. ปรับหน้า Billing → Pricing Plans (ตามรูปตัวอย่าง)
+- แก้ `src/pages/BillingPage.tsx` ให้แสดง:
+  - Toggle สลับ **รายเดือน / รายปี** (รายปีมีป้าย "ฟรี 1 เดือน")
+  - 2 แพ็กเกจ:
+    - **Creator** (฿899/เดือน, ฿799/เดือน รายปี) — 15 บัญชี, โพสต์ไม่จำกัด, ตั้งเวลาโพสต์, Carousel, วิดีโอ
+    - **Pro** (฿1,499/เดือน, ฿1,299/เดือน รายปี) — บัญชีไม่จำกัด, ทุกอย่างใน Creator + วิเคราะห์, ทีม, Priority support
+  - แต่ละแพ็กเกจแสดง feature list พร้อม checkmark สีเขียว
+  - ปุ่ม "แผนปัจจุบัน" (disabled) สำหรับ Creator, ปุ่ม "เริ่มต้นใช้งาน →" สำหรับ Pro
 
-**2. แก้ไข `src/pages/LoginPage.tsx`**
-- เพิ่มปุ่ม "เข้าสู่ระบบด้วย Google" พร้อม Google icon ด้านบนฟอร์ม
-- เพิ่ม divider "หรือ" คั่นระหว่างปุ่ม Google กับฟอร์ม email/password
-- เพิ่มลิงก์ "ลืมรหัสผ่าน?" ใต้ช่อง password → นำไปหน้า `/forgot-password`
+### 4. ปรับหน้า Settings/Profile (ตามรูปตัวอย่าง)
+แก้ `src/pages/SettingsPage.tsx` ให้มี 4 sections:
 
-**3. แก้ไข `src/pages/SignupPage.tsx`**
-- เพิ่มปุ่ม "สมัครด้วย Google" เหมือนหน้า Login
+- **Profile**: รูปโปรไฟล์ (อัปโหลดได้) + ช่อง Display Name (แก้ไขได้) + แสดง Email
+- **Email Address**: แสดง Current Email + ปุ่ม "เปลี่ยนอีเมล" (เรียก `supabase.auth.updateUser({ email })`)
+- **Password**: ปุ่ม "เปลี่ยนรหัสผ่าน" + ลิงก์ "ลืมรหัสผ่าน? ส่งลิงก์รีเซ็ต"
+- **Security**: ปุ่ม "ออกจากระบบทุกอุปกรณ์" (เรียก `supabase.auth.signOut({ scope: 'global' })`)
 
-**4. สร้าง `src/pages/ForgotPasswordPage.tsx`**
-- ฟอร์มกรอก email → เรียก `supabase.auth.resetPasswordForEmail(email, { redirectTo: origin + '/reset-password' })`
-- แสดงข้อความสำเร็จ "เราได้ส่งลิงก์รีเซ็ตรหัสผ่านไปที่อีเมลของคุณแล้ว"
+### 5. Database: สร้าง profiles table + avatar storage
+- Migration: สร้างตาราง `profiles` (id uuid PK → auth.users, display_name text, avatar_url text) พร้อม RLS
+- สร้าง storage bucket `avatars` (public)
+- Trigger: auto-create profile on new user signup
 
-**5. สร้าง `src/pages/ResetPasswordPage.tsx`**
-- ตรวจ URL hash สำหรับ `type=recovery`
-- ฟอร์มกรอกรหัสผ่านใหม่ → เรียก `supabase.auth.updateUser({ password })`
-- เมื่อสำเร็จ นำไปหน้า `/login`
-
-**6. แก้ไข `src/App.tsx`**
-- เพิ่ม routes: `/forgot-password`, `/reset-password` (public routes)
-
-### UI ทั้งหมดเป็นภาษาไทย
-- เข้าสู่ระบบด้วย Google
-- ลืมรหัสผ่าน?
-- รีเซ็ตรหัสผ่าน
-- กรุณากรอกอีเมลเพื่อรับลิงก์เปลี่ยนรหัสผ่าน
+### Files ที่แก้ไข
+| File | Action |
+|------|--------|
+| `src/index.css` | แก้ `--ring` |
+| `src/components/AppLayout.tsx` | ลบ PromoBanner |
+| `src/components/PromoBanner.tsx` | ลบไฟล์ |
+| `src/pages/BillingPage.tsx` | Redesign เป็น pricing plans |
+| `src/pages/SettingsPage.tsx` | Redesign เป็น profile + email + password + security |
+| DB migration | สร้าง profiles table + avatars bucket |
 
