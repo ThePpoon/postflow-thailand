@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
 import { MobileNav } from '@/components/MobileNav';
-import { PromoBanner } from '@/components/PromoBanner';
 
 export function AppLayout({ children }: { children: ReactNode }) {
   return (
