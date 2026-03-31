@@ -11,7 +11,6 @@ export function AppLayout({ children }: { children: ReactNode }) {
           <AppSidebar />
         </div>
         <div className="flex-1 flex flex-col">
-          <PromoBanner />
           <header className="sticky top-0 z-40 flex h-12 items-center border-b border-border bg-background/80 backdrop-blur-sm px-4 md:px-6">
             <SidebarTrigger className="hidden md:flex text-muted-foreground hover:text-foreground" />
           </header>
