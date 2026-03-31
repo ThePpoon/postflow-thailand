@@ -37,8 +37,8 @@ import {
 
 const createSubItems = [
   { title: 'โพสต์ใหม่', url: '/posts/new', icon: FileText },
-  { title: 'สตูดิโอ', url: '#', icon: Paintbrush },
-  { title: 'เครื่องมือแบบกลุ่ม', url: '#', icon: Layers },
+  { title: 'สตูดิโอ', url: '#', icon: Paintbrush, locked: true },
+  { title: 'เครื่องมือแบบกลุ่ม', url: '#', icon: Layers, locked: true },
 ];
 
 const postItems = [
