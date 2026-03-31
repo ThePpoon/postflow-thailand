@@ -17,6 +17,10 @@ import CreateTextPostPage from "./pages/CreateTextPostPage";
 import CreateImagePostPage from "./pages/CreateImagePostPage";
 import CreateVideoPostPage from "./pages/CreateVideoPostPage";
 import PostsPage from "./pages/PostsPage";
+import CalendarPage from "./pages/CalendarPage";
+import ScheduledPostsPage from "./pages/ScheduledPostsPage";
+import PostedPage from "./pages/PostedPage";
+import DraftsPage from "./pages/DraftsPage";
 import SettingsPage from "./pages/SettingsPage";
 import BillingPage from "./pages/BillingPage";
 import NotFound from "./pages/NotFound";
@@ -43,6 +47,10 @@ const App = () => (
             <Route path="/posts/new/image" element={<ProtectedRoute><CreateImagePostPage /></ProtectedRoute>} />
             <Route path="/posts/new/video" element={<ProtectedRoute><CreateVideoPostPage /></ProtectedRoute>} />
             <Route path="/posts" element={<ProtectedRoute><PostsPage /></ProtectedRoute>} />
+            <Route path="/posts/calendar" element={<ProtectedRoute><CalendarPage /></ProtectedRoute>} />
+            <Route path="/posts/scheduled" element={<ProtectedRoute><ScheduledPostsPage /></ProtectedRoute>} />
+            <Route path="/posts/posted" element={<ProtectedRoute><PostedPage /></ProtectedRoute>} />
+            <Route path="/posts/drafts" element={<ProtectedRoute><DraftsPage /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
             <Route path="/billing" element={<ProtectedRoute><BillingPage /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />

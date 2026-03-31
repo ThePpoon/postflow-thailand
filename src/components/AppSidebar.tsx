@@ -1,4 +1,24 @@
-import { Home, Link2, PlusCircle, List, Settings, LogOut, CreditCard } from 'lucide-react';
+import {
+  Home,
+  Link2,
+  PlusCircle,
+  FileText,
+  Paintbrush,
+  Layers,
+  CalendarDays,
+  List,
+  Clock,
+  CheckCircle2,
+  FileEdit,
+  BarChart3,
+  Lock,
+  Plug,
+  Users,
+  Settings,
+  Key,
+  CreditCard,
+  LogOut,
+} from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -15,22 +35,29 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 
-const primaryNavItems = [
-  { title: 'แดชบอร์ด', url: '/dashboard', icon: Home },
-  { title: 'บัญชีที่เชื่อมต่อ', url: '/accounts', icon: Link2 },
+const createSubItems = [
+  { title: 'โพสต์ใหม่', url: '/posts/new', icon: FileText },
+  { title: 'สตูดิโอ', url: '#', icon: Paintbrush },
+  { title: 'เครื่องมือแบบกลุ่ม', url: '#', icon: Layers },
 ];
 
-const createNavItems = [
-  { title: 'สร้างโพสต์ใหม่', url: '/posts/new', icon: PlusCircle },
+const postItems = [
+  { title: 'ปฏิทิน', url: '/posts/calendar', icon: CalendarDays },
+  { title: 'ทั้งหมด', url: '/posts', icon: List },
+  { title: 'ตั้งเวลา', url: '/posts/scheduled', icon: Clock },
+  { title: 'โพสต์แล้ว', url: '/posts/posted', icon: CheckCircle2 },
+  { title: 'แบบร่าง', url: '/posts/drafts', icon: FileEdit },
+  { title: 'วิเคราะห์', url: '#', icon: BarChart3, locked: true },
 ];
 
-const postNavItems = [
-  { title: 'โพสต์ทั้งหมด', url: '/posts', icon: List },
+const workspaceItems = [
+  { title: 'การเชื่อมต่อ', url: '/accounts', icon: Plug },
+  { title: 'ทีม', url: '#', icon: Users },
 ];
 
-const configNavItems = [
-  { title: 'Settings', url: '/settings', icon: Settings },
-  { title: 'Billing', url: '/billing', icon: CreditCard },
+const configItems = [
+  { title: 'ตั้งค่า', url: '/settings', icon: Settings },
+  { title: 'การเรียกเก็บเงิน', url: '/billing', icon: CreditCard },
 ];
 
 export function AppSidebar() {
@@ -44,9 +71,30 @@ export function AppSidebar() {
     navigate('/');
   };
 
+  const renderItems = (items: typeof createSubItems) =>
+    items.map((item) => (
+      <SidebarMenuItem key={item.title}>
+        <SidebarMenuButton asChild>
+          <NavLink
+            to={item.url}
+            end={item.url === '/posts'}
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            activeClassName="bg-sidebar-accent text-sidebar-accent-foreground border-l-2 border-primary"
+          >
+            <item.icon className="h-4 w-4 shrink-0" />
+            {!collapsed && <span className="text-sm">{item.title}</span>}
+            {!collapsed && 'locked' in item && (item as any).locked && (
+              <Lock className="ml-auto h-3.5 w-3.5 text-muted-foreground" />
+            )}
+          </NavLink>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    ));
+
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
+        {/* Logo */}
         <div className="flex items-center gap-2 px-4 py-5">
           <img src={logo} alt="Post2Flow" className="h-8 w-8 rounded-lg" />
           {!collapsed && (
@@ -54,111 +102,100 @@ export function AppSidebar() {
           )}
         </div>
 
+        {/* Dashboard */}
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {primaryNavItems.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      end={item.url === '/dashboard'}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                      activeClassName="bg-accent text-foreground"
-                    >
-                      <item.icon className="h-5 w-5" />
-                      {!collapsed && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <NavLink
+                    to="/dashboard"
+                    end
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    activeClassName="bg-sidebar-accent text-sidebar-accent-foreground"
+                  >
+                    <Home className="h-4 w-4 shrink-0" />
+                    {!collapsed && <span className="text-sm">แดชบอร์ด</span>}
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Create */}
         <SidebarGroup>
-          {!collapsed && (
-            <div className="px-4 pb-2 pt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/70">
-              Create
-            </div>
-          )}
           <SidebarGroupContent>
             <SidebarMenu>
-              {createNavItems.map((item) => (
-                <SidebarMenuItem key={item.url}>
+              {!collapsed && (
+                <div className="px-3 mb-2">
+                  <button
+                    onClick={() => navigate('/posts/new')}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                  >
+                    <PlusCircle className="h-4 w-4" />
+                    สร้างโพสต์
+                  </button>
+                </div>
+              )}
+              {collapsed && (
+                <SidebarMenuItem>
                   <SidebarMenuButton asChild>
                     <NavLink
-                      to={item.url}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                      activeClassName="bg-accent text-foreground"
+                      to="/posts/new"
+                      className="flex items-center justify-center text-primary"
+                      activeClassName=""
                     >
-                      <item.icon className="h-5 w-5 text-primary" />
-                      {!collapsed && <span>{item.title}</span>}
+                      <PlusCircle className="h-5 w-5" />
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              ))}
+              )}
+              {renderItems(createSubItems)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Posts */}
         <SidebarGroup>
           {!collapsed && (
-            <div className="px-4 pb-2 pt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/70">
-              Posts
+            <div className="px-4 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/60">
+              โพสต์
             </div>
           )}
           <SidebarGroupContent>
-            <SidebarMenu>
-              {postNavItems.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                      activeClassName="bg-accent text-foreground"
-                    >
-                      <item.icon className="h-5 w-5" />
-                      {!collapsed && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <SidebarMenu>{renderItems(postItems)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {/* Workspace */}
         <SidebarGroup>
           {!collapsed && (
-            <div className="px-4 pb-2 pt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/70">
-              Config
+            <div className="px-4 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/60">
+              พื้นที่ทำงาน
             </div>
           )}
           <SidebarGroupContent>
-            <SidebarMenu>
-              {configNavItems.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url}
-                      end={item.url === '/settings' || item.url === '/billing'}
-                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                      activeClassName="bg-accent text-foreground"
-                    >
-                      <item.icon className="h-5 w-5" />
-                      {!collapsed && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <SidebarMenu>{renderItems(workspaceItems)}</SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Config */}
+        <SidebarGroup>
+          {!collapsed && (
+            <div className="px-4 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground/60">
+              การตั้งค่า
+            </div>
+          )}
+          <SidebarGroupContent>
+            <SidebarMenu>{renderItems(configItems)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border p-4">
+      <SidebarFooter className="border-t border-sidebar-border p-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-semibold">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 text-primary text-sm font-semibold shrink-0">
             {user?.email?.charAt(0).toUpperCase()}
           </div>
           {!collapsed && (
