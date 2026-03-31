@@ -104,7 +104,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ── Hero ── */}
-      <section className="flex flex-col items-center px-6 pt-20 pb-16 text-center md:pt-32">
+      <section className="flex min-h-[calc(100vh-57px)] flex-col items-center justify-center px-6 text-center">
         {/* Platform icons */}
         <div className="mb-8 flex items-center gap-4">
           {platforms.map((p) => (
