@@ -34,7 +34,7 @@ export default function AccountsPage() {
   const fetchAccounts = async () => {
     if (!user) return;
     const { data } = await supabase
-      .from('social_accounts')
+      .from('connected_accounts')
       .select('id, platform, username, avatar_url, is_active')
       .eq('user_id', user.id)
       .eq('is_active', true);
@@ -61,7 +61,7 @@ export default function AccountsPage() {
 
   const handleDisconnect = async (accountId: string) => {
     await supabase
-      .from('social_accounts')
+      .from('connected_accounts')
       .update({ is_active: false })
       .eq('id', accountId);
     fetchAccounts();
