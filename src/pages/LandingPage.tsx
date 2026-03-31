@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { ArrowRight, Check, Facebook, Instagram, Youtube, MessageCircle, Clock, Send, Layers, CalendarDays, FileText, Image, Video } from 'lucide-react';
+import { ArrowRight, Check, Facebook, Instagram, Youtube, MessageCircle, Clock, Send, Layers, CalendarDays, FileText, Image, Video, Zap, BarChart3, Shield, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 import logo from '@/assets/logo.png';
 
-/* ───── Platform icons (custom SVGs for TikTok & LINE, X) ───── */
+/* ───── Platform icons ───── */
 const XIcon = () => (
   <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -25,6 +26,21 @@ const LINEIcon = () => (
   </svg>
 );
 
+/* ───── Animation variants ───── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.1 } },
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+};
+
 /* ───── Data ───── */
 const platforms = [
   { name: 'Facebook', icon: Facebook, color: 'text-blue-500' },
@@ -33,6 +49,39 @@ const platforms = [
   { name: 'TikTok', icon: TikTokIcon, color: 'text-foreground' },
   { name: 'YouTube', icon: Youtube, color: 'text-red-500' },
   { name: 'LINE', icon: LINEIcon, color: 'text-green-500' },
+];
+
+const features = [
+  {
+    icon: Send,
+    title: 'Cross-Posting อัตโนมัติ',
+    desc: 'เขียนโพสต์ครั้งเดียว ส่งไปยังทุกแพลตฟอร์มพร้อมกัน',
+  },
+  {
+    icon: Clock,
+    title: 'ตั้งเวลาโพสต์ล่วงหน้า',
+    desc: 'วางแผนคอนเทนต์ล่วงหน้า ระบบจะโพสต์ให้อัตโนมัติ',
+  },
+  {
+    icon: Image,
+    title: 'Carousel & Media',
+    desc: 'รองรับรูปภาพ Carousel และวิดีโอ ปรับขนาดอัตโนมัติ',
+  },
+  {
+    icon: BarChart3,
+    title: 'วิเคราะห์ผลลัพธ์',
+    desc: 'ดูสถิติ Engagement ของทุกแพลตฟอร์มในที่เดียว',
+  },
+  {
+    icon: Layers,
+    title: 'จัดการหลายบัญชี',
+    desc: 'เชื่อมต่อหลายบัญชี หลายแบรนด์ จัดการง่ายในที่เดียว',
+  },
+  {
+    icon: Shield,
+    title: 'ปลอดภัย & น่าเชื่อถือ',
+    desc: 'เข้ารหัสข้อมูล OAuth ที่ปลอดภัย ไม่เก็บรหัสผ่าน',
+  },
 ];
 
 const plans = [
@@ -71,15 +120,15 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background scroll-smooth">
+    <div className="min-h-screen bg-background scroll-smooth overflow-x-hidden">
       {/* ── Navbar ── */}
-      <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-          <div className="flex items-center gap-2">
+      <nav className="sticky top-0 z-50 border-b border-border/30 bg-background/70 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
+          <div className="flex items-center gap-2.5">
             <img src={logo} alt="Post2Flow" className="h-9 w-9 rounded-lg" />
-            <span className="text-xl font-bold text-foreground">Post2Flow</span>
+            <span className="text-xl font-bold text-foreground tracking-tight">Post2Flow</span>
           </div>
-          <div className="hidden items-center gap-6 md:flex">
+          <div className="hidden items-center gap-8 md:flex">
             {[
               { label: 'Features', id: 'features' },
               { label: 'Platforms', id: 'platforms' },
@@ -89,14 +138,14 @@ export default function LandingPage() {
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all hover:after:w-full"
               >
                 {item.label}
               </button>
             ))}
           </div>
           <Link to="/login">
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+            <Button variant="outline" size="sm" className="rounded-full border-border/50 text-foreground hover:bg-card">
               เข้าสู่ระบบ
             </Button>
           </Link>
@@ -104,252 +153,400 @@ export default function LandingPage() {
       </nav>
 
       {/* ── Hero ── */}
-      <section className="flex min-h-[calc(100vh-57px)] flex-col items-center justify-center px-6 text-center">
-        {/* Platform icons */}
-        <div className="mb-8 flex items-center gap-4">
-          {platforms.map((p) => (
-            <div key={p.name} className={`flex h-10 w-10 items-center justify-center rounded-xl bg-card border border-border ${p.color}`}>
-              <p.icon />
-            </div>
-          ))}
+      <section className="relative flex min-h-[calc(100vh-57px)] flex-col items-center justify-center px-6 text-center overflow-hidden">
+        {/* Background effects */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[800px] rounded-full bg-primary/5 blur-[120px]" />
+          <div className="absolute right-0 top-0 h-[300px] w-[300px] rounded-full bg-primary/3 blur-[80px]" />
         </div>
-        <h1 className="max-w-3xl text-4xl font-extrabold leading-tight text-foreground md:text-6xl">
-          โพสต์ทุกแพลตฟอร์ม
-          <br />
-          <span className="text-primary">จากที่เดียว</span>
-        </h1>
-        <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-          เชื่อมต่อทุกโซเชียลมีเดีย สร้างโพสต์ครั้งเดียว แล้วส่งไปทุกแพลตฟอร์มพร้อมกัน ตั้งเวลาล่วงหน้า จัดการได้ในที่เดียว
-        </p>
-        <Link to="/signup" className="mt-8">
-          <Button size="lg" className="gap-2 rounded-full px-8 text-base font-semibold">
-            เริ่มต้นฟรี <ArrowRight className="h-4 w-4" />
-          </Button>
-        </Link>
+
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={stagger}
+          className="relative z-10 flex flex-col items-center"
+        >
+          {/* Badge */}
+          <motion.div variants={fadeUp}>
+            <Badge variant="secondary" className="mb-8 gap-2 rounded-full border border-border/50 bg-card/80 px-4 py-2 text-sm backdrop-blur-sm">
+              <Sparkles className="h-4 w-4 text-primary" />
+              จัดการโซเชียลมีเดียทุกแพลตฟอร์ม
+            </Badge>
+          </motion.div>
+
+          {/* Platform icons */}
+          <motion.div variants={fadeUp} className="mb-10 flex items-center gap-3">
+            {platforms.map((p, i) => (
+              <motion.div
+                key={p.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.08, duration: 0.5 }}
+                className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-card/80 border border-border/50 backdrop-blur-sm ${p.color} transition-transform hover:scale-110 hover:-translate-y-1`}
+              >
+                <p.icon />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Heading */}
+          <motion.h1 variants={fadeUp} className="max-w-4xl text-5xl font-extrabold leading-[1.1] tracking-tight text-foreground md:text-7xl">
+            โพสต์ทุกแพลตฟอร์ม
+            <br />
+            <span className="bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent">
+              จากที่เดียว
+            </span>
+          </motion.h1>
+
+          {/* Subtitle */}
+          <motion.p variants={fadeUp} className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+            เชื่อมต่อทุกโซเชียลมีเดีย สร้างโพสต์ครั้งเดียว แล้วส่งไปทุกแพลตฟอร์มพร้อมกัน
+            <br className="hidden md:block" />
+            ตั้งเวลาล่วงหน้า จัดการได้ในที่เดียว
+          </motion.p>
+
+          {/* CTA */}
+          <motion.div variants={fadeUp} className="mt-10 flex items-center gap-4">
+            <Link to="/signup">
+              <Button size="lg" className="gap-2 rounded-full px-8 text-base font-semibold shadow-lg shadow-primary/25 transition-shadow hover:shadow-xl hover:shadow-primary/30">
+                เริ่มต้นฟรี <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <button
+              onClick={() => scrollTo('features')}
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground underline underline-offset-4 decoration-border hover:decoration-foreground"
+            >
+              ดูฟีเจอร์ทั้งหมด
+            </button>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div variants={fadeUp} className="mt-16 flex items-center gap-8 md:gap-12">
+            {[
+              { value: '6+', label: 'แพลตฟอร์ม' },
+              { value: '1K+', label: 'ผู้ใช้งาน' },
+              { value: '99.9%', label: 'Uptime' },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-2xl font-bold text-foreground md:text-3xl">{stat.value}</div>
+                <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* ── Features ── */}
-      <section id="features" className="mx-auto max-w-6xl px-6 pt-32 pb-20">
-        <h2 className="mb-16 text-center text-3xl font-bold text-foreground md:text-4xl">
-          ฟีเจอร์ที่ช่วยให้คุณ<span className="text-primary">ทำงานง่ายขึ้น</span>
-        </h2>
-
-        {/* Feature 1: Cross-Posting */}
-        <div className="mb-20 grid items-center gap-12 md:grid-cols-2">
-          <div>
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-              <Send className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-3 text-2xl font-bold text-foreground">Cross-Posting อัตโนมัติ</h3>
-            <p className="mb-4 text-muted-foreground">
-              เขียนโพสต์ครั้งเดียว แล้วส่งไปยังทุกแพลตฟอร์มที่เชื่อมต่อพร้อมกัน ไม่ต้องเสียเวลาก็อปวางทีละที่
-            </p>
-            <ul className="space-y-2">
-              {['เลือกแพลตฟอร์มได้อิสระ', 'ปรับข้อความแต่ละแพลตฟอร์ม', 'รองรับข้อความ รูป และวิดีโอ'].map((t) => (
-                <li key={t} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Check className="h-4 w-4 text-primary shrink-0" /> {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* Graphic: platform diagram */}
-          <div className="flex items-center justify-center">
-            <div className="relative rounded-2xl border border-border bg-card p-8">
-              <div className="flex flex-col items-center gap-4">
-                <div className="rounded-xl border border-border bg-secondary p-4 text-center">
-                  <FileText className="mx-auto mb-2 h-8 w-8 text-primary" />
-                  <span className="text-sm font-medium text-foreground">โพสต์ของคุณ</span>
-                </div>
-                <div className="h-8 w-px bg-primary/50" />
-                <div className="grid grid-cols-3 gap-3">
-                  {platforms.slice(0, 6).map((p) => (
-                    <div key={p.name} className={`flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-secondary ${p.color}`}>
-                      <p.icon />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+      <section id="features" className="relative py-28">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-0 top-1/2 h-[400px] w-[400px] -translate-y-1/2 rounded-full bg-primary/3 blur-[100px]" />
         </div>
+        <div className="relative mx-auto max-w-6xl px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={stagger}
+            className="text-center mb-16"
+          >
+            <motion.div variants={fadeUp}>
+              <Badge variant="secondary" className="mb-4 rounded-full border border-border/50 bg-card/80 px-4 py-1.5 text-xs">
+                FEATURES
+              </Badge>
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="text-3xl font-bold text-foreground md:text-5xl tracking-tight">
+              ฟีเจอร์ที่ช่วยให้คุณ
+              <span className="bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent"> ทำงานง่ายขึ้น</span>
+            </motion.h2>
+            <motion.p variants={fadeUp} className="mt-4 text-muted-foreground max-w-lg mx-auto">
+              เครื่องมือครบครันสำหรับจัดการโซเชียลมีเดียของคุณ
+            </motion.p>
+          </motion.div>
 
-        {/* Feature 2: Scheduling */}
-        <div className="grid items-center gap-12 md:grid-cols-2">
-          {/* Graphic: schedule UI */}
-          <div className="order-2 flex items-center justify-center md:order-1">
-            <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-6">
-              <div className="mb-4 flex items-center gap-3">
-                <CalendarDays className="h-5 w-5 text-primary" />
-                <span className="font-medium text-foreground">ตั้งเวลาโพสต์</span>
-              </div>
-              <div className="space-y-3">
-                {['จันทร์ 09:00 — Facebook, IG', 'พุธ 12:00 — X, TikTok', 'ศุกร์ 18:00 — ทุกแพลตฟอร์ม'].map((s, i) => (
-                  <div key={i} className="flex items-center gap-3 rounded-lg border border-border bg-secondary px-4 py-3">
-                    <Clock className="h-4 w-4 text-primary shrink-0" />
-                    <span className="text-sm text-muted-foreground">{s}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="order-1 md:order-2">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-              <Clock className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="mb-3 text-2xl font-bold text-foreground">ตั้งเวลาโพสต์ล่วงหน้า</h3>
-            <p className="mb-4 text-muted-foreground">
-              วางแผนคอนเทนต์ล่วงหน้า ตั้งเวลาที่ต้องการ ระบบจะโพสต์ให้อัตโนมัติตามเวลาที่กำหนด
-            </p>
-            <ul className="space-y-2">
-              {['ตั้งเวลาโพสต์ล่วงหน้าได้ไม่จำกัด', 'ดูปฏิทินคอนเทนต์ภาพรวม', 'แก้ไขหรือยกเลิกได้ตลอด'].map((t) => (
-                <li key={t} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Check className="h-4 w-4 text-primary shrink-0" /> {t}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+            variants={stagger}
+            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {features.map((f) => (
+              <motion.div
+                key={f.title}
+                variants={fadeUp}
+                className="group rounded-2xl border border-border/50 bg-card/50 p-7 backdrop-blur-sm transition-all hover:border-primary/20 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5"
+              >
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/15">
+                  <f.icon className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="mb-2 text-lg font-semibold text-foreground">{f.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
       {/* ── Platforms ── */}
-      <section id="platforms" className="border-t border-border bg-card/50 py-20">
+      <section id="platforms" className="relative py-28 border-t border-border/30">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="mb-4 text-center text-3xl font-bold text-foreground md:text-4xl">
-            แพลตฟอร์มที่<span className="text-primary">รองรับ</span>
-          </h2>
-          <p className="mx-auto mb-12 max-w-lg text-center text-muted-foreground">
-            เชื่อมต่อแพลตฟอร์มยอดนิยมและจัดการทุกบัญชีจากที่เดียว
-          </p>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={stagger}
+            className="text-center mb-16"
+          >
+            <motion.div variants={fadeUp}>
+              <Badge variant="secondary" className="mb-4 rounded-full border border-border/50 bg-card/80 px-4 py-1.5 text-xs">
+                PLATFORMS
+              </Badge>
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="text-3xl font-bold text-foreground md:text-5xl tracking-tight">
+              แพลตฟอร์มที่<span className="bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent"> รองรับ</span>
+            </motion.h2>
+            <motion.p variants={fadeUp} className="mt-4 text-muted-foreground max-w-lg mx-auto">
+              เชื่อมต่อแพลตฟอร์มยอดนิยมและจัดการทุกบัญชีจากที่เดียว
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+            variants={stagger}
+            className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
+          >
             {platforms.map((p) => (
-              <div key={p.name} className="flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 transition-colors hover:border-primary/30">
-                <div className={`flex h-12 w-12 items-center justify-center rounded-xl bg-secondary ${p.color}`}>
+              <motion.div
+                key={p.name}
+                variants={scaleIn}
+                className="group flex flex-col items-center gap-4 rounded-2xl border border-border/50 bg-card/50 p-8 backdrop-blur-sm transition-all hover:border-primary/20 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1"
+              >
+                <div className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary/80 ${p.color} transition-transform group-hover:scale-110`}>
                   <p.icon />
                 </div>
                 <span className="text-sm font-medium text-foreground">{p.name}</span>
-              </div>
+              </motion.div>
             ))}
-            {/* Coming soon */}
             {['Threads', 'Pinterest'].map((name) => (
-              <div key={name} className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card/50 p-6 opacity-50">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary">
+              <motion.div
+                key={name}
+                variants={scaleIn}
+                className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border/40 bg-card/20 p-8 opacity-40"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary/50">
                   <Layers className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <span className="text-sm text-muted-foreground">{name}</span>
-                <Badge variant="secondary" className="text-xs">เร็วๆ นี้</Badge>
-              </div>
+                <Badge variant="secondary" className="text-xs bg-secondary/50">เร็วๆ นี้</Badge>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── Pricing ── */}
-      <section id="pricing" className="py-20">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 className="mb-4 text-center text-3xl font-bold text-foreground md:text-4xl">
-            แพ็กเกจ<span className="text-primary">ราคา</span>
-          </h2>
-          <p className="mx-auto mb-8 max-w-lg text-center text-muted-foreground">
-            เลือกแผนที่เหมาะกับการใช้งานของคุณ
-          </p>
+      <section id="pricing" className="relative py-28 border-t border-border/30">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute right-0 top-1/3 h-[400px] w-[400px] rounded-full bg-primary/3 blur-[100px]" />
+        </div>
+        <div className="relative mx-auto max-w-4xl px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={stagger}
+            className="text-center mb-12"
+          >
+            <motion.div variants={fadeUp}>
+              <Badge variant="secondary" className="mb-4 rounded-full border border-border/50 bg-card/80 px-4 py-1.5 text-xs">
+                PRICING
+              </Badge>
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="text-3xl font-bold text-foreground md:text-5xl tracking-tight">
+              แพ็กเกจ<span className="bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent"> ราคา</span>
+            </motion.h2>
+            <motion.p variants={fadeUp} className="mt-4 text-muted-foreground max-w-lg mx-auto">
+              เลือกแผนที่เหมาะกับการใช้งานของคุณ
+            </motion.p>
+          </motion.div>
 
           {/* Toggle */}
-          <div className="mb-10 flex items-center justify-center gap-3">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="mb-12 flex items-center justify-center gap-3"
+          >
             <span className={`text-sm font-medium transition-colors ${!yearly ? 'text-foreground' : 'text-muted-foreground'}`}>
               รายเดือน
             </span>
             <button
               onClick={() => setYearly(!yearly)}
-              className="relative h-6 w-11 rounded-full bg-secondary border border-border transition-colors shrink-0"
+              className={`relative h-7 w-12 rounded-full border transition-colors shrink-0 ${yearly ? 'bg-primary border-primary' : 'bg-secondary border-border'}`}
             >
               <span
-                className="absolute rounded-full bg-primary transition-transform duration-200"
-                style={{ width: 18, height: 18, top: 2, left: 2, transform: yearly ? 'translateX(20px)' : 'translateX(0)' }}
+                className={`absolute rounded-full transition-all duration-200 ${yearly ? 'bg-background' : 'bg-muted-foreground'}`}
+                style={{ width: 20, height: 20, top: 2.5, left: 2, transform: yearly ? 'translateX(20px)' : 'translateX(0)' }}
               />
             </button>
             <span className={`text-sm font-medium transition-colors ${yearly ? 'text-foreground' : 'text-muted-foreground'}`}>
               รายปี
             </span>
             {yearly && (
-              <Badge className="bg-primary/15 text-primary hover:bg-primary/15 text-xs">ประหยัด 2 เดือน</Badge>
+              <Badge className="bg-primary/15 text-primary hover:bg-primary/15 text-xs rounded-full border-0">ประหยัด 2 เดือน</Badge>
             )}
-          </div>
+          </motion.div>
 
           {/* Cards */}
-          <div className="grid gap-6 md:grid-cols-2">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={stagger}
+            className="grid gap-6 md:grid-cols-2"
+          >
             {plans.map((plan) => (
-              <div
+              <motion.div
                 key={plan.name}
-                className={`relative rounded-2xl border bg-card p-8 ${plan.popular ? 'border-primary/50 ring-1 ring-primary/20' : 'border-border'}`}
+                variants={scaleIn}
+                className={`relative rounded-2xl border bg-card/50 backdrop-blur-sm p-8 transition-all hover:shadow-lg ${
+                  plan.popular
+                    ? 'border-primary/40 shadow-lg shadow-primary/10'
+                    : 'border-border/50 hover:border-border'
+                }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-primary text-primary-foreground">ยอดนิยม</Badge>
+                    <Badge className="bg-primary text-primary-foreground rounded-full px-4 shadow-lg shadow-primary/25">ยอดนิยม</Badge>
                   </div>
                 )}
                 <h3 className="text-lg font-bold text-foreground">{plan.name}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{plan.description}</p>
-                <div className="mt-4">
-                  <span className="text-4xl font-bold text-foreground">
+                <div className="mt-6 flex items-baseline gap-1">
+                  <span className="text-5xl font-bold tracking-tight text-foreground">
                     ฿{(yearly ? plan.yearlyPrice : plan.monthlyPrice).toLocaleString()}
                   </span>
                   <span className="text-muted-foreground">/เดือน</span>
                 </div>
-                {yearly && (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    เรียกเก็บ ฿{(plan.yearlyPrice * 12).toLocaleString()}/ปี
-                  </p>
-                )}
-                {!yearly && <p className="mt-1 text-xs text-muted-foreground invisible">placeholder</p>}
-                <ul className="mt-6 space-y-2.5">
+                <div className="h-5 mt-1">
+                  {yearly && (
+                    <p className="text-xs text-muted-foreground">
+                      เรียกเก็บ ฿{(plan.yearlyPrice * 12).toLocaleString()}/ปี
+                    </p>
+                  )}
+                </div>
+                <div className="my-6 h-px bg-border/50" />
+                <ul className="space-y-3">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Check className="h-4 w-4 text-primary shrink-0" /> {f}
+                    <li key={f} className="flex items-center gap-3 text-sm text-muted-foreground">
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 shrink-0">
+                        <Check className="h-3 w-3 text-primary" />
+                      </div>
+                      {f}
                     </li>
                   ))}
                 </ul>
-                <Link to="/signup" className="mt-6 block">
-                  <Button className="w-full" variant={plan.popular ? 'default' : 'outline'}>
+                <Link to="/signup" className="mt-8 block">
+                  <Button
+                    className={`w-full rounded-xl h-12 text-base font-medium ${
+                      plan.popular
+                        ? 'shadow-lg shadow-primary/20'
+                        : ''
+                    }`}
+                    variant={plan.popular ? 'default' : 'outline'}
+                  >
                     เริ่มต้นใช้งาน <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="border-t border-border bg-card/50 py-20">
+      <section id="faq" className="py-28 border-t border-border/30">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="grid gap-12 md:grid-cols-[1fr_2fr]">
-            <div>
-              <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-                คำถามที่<span className="text-primary">พบบ่อย</span>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={stagger}
+            className="grid gap-12 md:grid-cols-[1fr_2fr]"
+          >
+            <motion.div variants={fadeUp}>
+              <Badge variant="secondary" className="mb-4 rounded-full border border-border/50 bg-card/80 px-4 py-1.5 text-xs">
+                FAQ
+              </Badge>
+              <h2 className="text-3xl font-bold text-foreground md:text-4xl tracking-tight">
+                คำถามที่
+                <span className="bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent"> พบบ่อย</span>
               </h2>
-              <p className="mt-3 text-muted-foreground">
+              <p className="mt-4 text-muted-foreground leading-relaxed">
                 หากไม่พบคำตอบที่ต้องการ สามารถติดต่อทีมงานได้ตลอดเวลา
               </p>
-            </div>
-            <Accordion type="single" collapsible className="w-full">
-              {faqs.map((faq, i) => (
-                <AccordionItem key={i} value={`faq-${i}`} className="border-border">
-                  <AccordionTrigger className="text-left text-foreground hover:no-underline">
-                    {faq.q}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
-                    {faq.a}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
+            </motion.div>
+            <motion.div variants={fadeUp}>
+              <Accordion type="single" collapsible className="w-full">
+                {faqs.map((faq, i) => (
+                  <AccordionItem key={i} value={`faq-${i}`} className="border-border/50">
+                    <AccordionTrigger className="text-left text-foreground hover:no-underline py-5">
+                      {faq.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
+                      {faq.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
+      {/* ── CTA Section ── */}
+      <section className="relative py-28 border-t border-border/30">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[400px] w-[600px] rounded-full bg-primary/5 blur-[120px]" />
+        </div>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={stagger}
+          className="relative mx-auto max-w-3xl px-6 text-center"
+        >
+          <motion.h2 variants={fadeUp} className="text-3xl font-bold text-foreground md:text-5xl tracking-tight">
+            พร้อมเริ่มต้น
+            <span className="bg-gradient-to-r from-primary to-emerald-400 bg-clip-text text-transparent"> แล้วหรือยัง?</span>
+          </motion.h2>
+          <motion.p variants={fadeUp} className="mt-4 text-lg text-muted-foreground">
+            ทดลองใช้งานฟรี 14 วัน ไม่ต้องใส่บัตรเครดิต
+          </motion.p>
+          <motion.div variants={fadeUp} className="mt-8">
+            <Link to="/signup">
+              <Button size="lg" className="gap-2 rounded-full px-10 text-base font-semibold shadow-lg shadow-primary/25 transition-shadow hover:shadow-xl hover:shadow-primary/30">
+                สมัครฟรี <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </motion.div>
+        </motion.div>
+      </section>
+
       {/* ── Footer ── */}
-      <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
-        © 2026 Post2Flow — สร้างขึ้นสำหรับธุรกิจขนาดเล็กในประเทศไทย
+      <footer className="border-t border-border/30 py-10">
+        <div className="mx-auto max-w-6xl px-6 flex flex-col items-center gap-4 md:flex-row md:justify-between">
+          <div className="flex items-center gap-2">
+            <img src={logo} alt="Post2Flow" className="h-7 w-7 rounded-md" />
+            <span className="text-sm font-semibold text-foreground">Post2Flow</span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            © 2026 Post2Flow — สร้างขึ้นสำหรับธุรกิจขนาดเล็กในประเทศไทย
+          </p>
+        </div>
       </footer>
     </div>
   );
