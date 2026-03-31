@@ -18,7 +18,13 @@ import {
 const primaryNavItems = [
   { title: 'แดชบอร์ด', url: '/dashboard', icon: Home },
   { title: 'บัญชีที่เชื่อมต่อ', url: '/accounts', icon: Link2 },
-  { title: 'สร้างโพสต์', url: '/posts/new', icon: PlusCircle },
+];
+
+const createNavItems = [
+  { title: 'สร้างโพสต์ใหม่', url: '/posts/new', icon: PlusCircle },
+];
+
+const postNavItems = [
   { title: 'โพสต์ทั้งหมด', url: '/posts', icon: List },
 ];
 
@@ -60,7 +66,59 @@ export function AppSidebar() {
                       className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                       activeClassName="bg-accent text-foreground"
                     >
-                      <item.icon className={`h-5 w-5 ${item.url === '/posts/new' ? 'text-primary' : ''}`} />
+                      <item.icon className="h-5 w-5" />
+                      {!collapsed && <span>{item.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          {!collapsed && (
+            <div className="px-4 pb-2 pt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/70">
+              Create
+            </div>
+          )}
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {createNavItems.map((item) => (
+                <SidebarMenuItem key={item.url}>
+                  <SidebarMenuButton asChild>
+                    <NavLink
+                      to={item.url}
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      activeClassName="bg-accent text-foreground"
+                    >
+                      <item.icon className="h-5 w-5 text-primary" />
+                      {!collapsed && <span>{item.title}</span>}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          {!collapsed && (
+            <div className="px-4 pb-2 pt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-muted-foreground/70">
+              Posts
+            </div>
+          )}
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {postNavItems.map((item) => (
+                <SidebarMenuItem key={item.url}>
+                  <SidebarMenuButton asChild>
+                    <NavLink
+                      to={item.url}
+                      className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      activeClassName="bg-accent text-foreground"
+                    >
+                      <item.icon className="h-5 w-5" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
