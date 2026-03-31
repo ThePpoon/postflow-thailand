@@ -277,6 +277,27 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
+        {/* Connected Accounts - visible on mobile */}
+        <Card className="border-border bg-card md:hidden">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <Plug className="h-4 w-4" /> การเชื่อมต่อแพลตฟอร์ม
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <button
+              onClick={() => navigate('/accounts')}
+              className="flex w-full items-center justify-between rounded-lg border border-border bg-secondary/30 px-4 py-3 transition-colors hover:bg-secondary/50"
+            >
+              <div>
+                <p className="text-sm font-medium text-foreground text-left">จัดการบัญชีที่เชื่อมต่อ</p>
+                <p className="text-xs text-muted-foreground text-left">Facebook, Instagram และอื่นๆ</p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </button>
+          </CardContent>
+        </Card>
+
         {/* Security */}
         <Card className="border-border bg-card">
           <CardHeader>
