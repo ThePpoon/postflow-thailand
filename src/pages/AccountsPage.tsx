@@ -61,7 +61,7 @@ export default function AccountsPage() {
 
   const handleDisconnect = async (accountId: string) => {
     await supabase
-      .from('social_accounts')
+      .from('connected_accounts')
       .update({ is_active: false })
       .eq('id', accountId);
     fetchAccounts();
