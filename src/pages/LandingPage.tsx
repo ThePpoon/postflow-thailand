@@ -129,7 +129,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Features ── */}
-      <section id="features" className="mx-auto max-w-6xl px-6 py-20">
+      <section id="features" className="mx-auto max-w-6xl px-6 pt-32 pb-20">
         <h2 className="mb-16 text-center text-3xl font-bold text-foreground md:text-4xl">
           ฟีเจอร์ที่ช่วยให้คุณ<span className="text-primary">ทำงานง่ายขึ้น</span>
         </h2>
