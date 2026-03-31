@@ -18,7 +18,13 @@ import {
 const primaryNavItems = [
   { title: 'แดชบอร์ด', url: '/dashboard', icon: Home },
   { title: 'บัญชีที่เชื่อมต่อ', url: '/accounts', icon: Link2 },
-  { title: 'สร้างโพสต์', url: '/posts/new', icon: PlusCircle },
+];
+
+const createNavItems = [
+  { title: 'สร้างโพสต์ใหม่', url: '/posts/new', icon: PlusCircle },
+];
+
+const postNavItems = [
   { title: 'โพสต์ทั้งหมด', url: '/posts', icon: List },
 ];
 
