@@ -54,26 +54,27 @@ export default function BillingPage() {
         </div>
 
         {/* Toggle */}
-        <div className="flex items-center justify-center gap-3">
-          <span className={`text-sm font-medium ${!yearly ? 'text-foreground' : 'text-muted-foreground'}`}>
+        <div className="flex items-center justify-center gap-3 min-h-[32px]">
+          <span className={`text-sm font-medium transition-colors ${!yearly ? 'text-foreground' : 'text-muted-foreground'}`}>
             รายเดือน
           </span>
           <button
             onClick={() => setYearly(!yearly)}
-            className={`relative h-7 w-12 rounded-full transition-colors ${yearly ? 'bg-primary' : 'bg-secondary'}`}
+            className="relative h-6 w-11 rounded-full border border-border bg-secondary transition-colors shrink-0"
           >
             <span
-              className={`absolute top-0.5 left-0.5 h-6 w-6 rounded-full bg-foreground transition-transform ${yearly ? 'translate-x-5' : ''}`}
+              className={`absolute top-0.5 left-0.5 h-4.5 w-4.5 rounded-full bg-primary transition-transform duration-200 ${yearly ? 'translate-x-5' : 'translate-x-0'}`}
+              style={{ width: 18, height: 18, top: 2, left: 2, transform: yearly ? 'translateX(20px)' : 'translateX(0)' }}
             />
           </button>
-          <span className={`text-sm font-medium ${yearly ? 'text-foreground' : 'text-muted-foreground'}`}>
+          <span className={`text-sm font-medium transition-colors ${yearly ? 'text-foreground' : 'text-muted-foreground'}`}>
             รายปี
           </span>
-          {yearly && (
-            <Badge className="bg-primary/15 text-primary hover:bg-primary/15 text-xs">
-              ฟรี 1 เดือน
-            </Badge>
-          )}
+          <Badge
+            className={`text-xs transition-opacity ${yearly ? 'opacity-100 bg-primary/15 text-primary hover:bg-primary/15' : 'opacity-0 pointer-events-none bg-primary/15 text-primary hover:bg-primary/15'}`}
+          >
+            ฟรี 1 เดือน
+          </Badge>
         </div>
 
         {/* Plans */}
@@ -81,7 +82,7 @@ export default function BillingPage() {
           {plans.map((plan) => (
             <Card
               key={plan.name}
-              className={`relative border-border bg-card ${plan.popular ? 'ring-2 ring-primary' : ''}`}
+              className={`relative border-border bg-card ${plan.popular ? 'ring-1 ring-primary/50' : ''}`}
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -100,6 +101,9 @@ export default function BillingPage() {
                     <p className="text-xs text-muted-foreground mt-1">
                       เรียกเก็บ ฿{(plan.yearlyPrice * 12).toLocaleString()}/ปี
                     </p>
+                  )}
+                  {!yearly && (
+                    <p className="text-xs text-muted-foreground mt-1 invisible">placeholder</p>
                   )}
                 </div>
               </CardHeader>

@@ -79,7 +79,7 @@ export function AppSidebar() {
             to={item.url}
             end={item.url === '/posts'}
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-            activeClassName="bg-sidebar-accent text-sidebar-accent-foreground border-l-2 border-primary"
+            activeClassName="bg-sidebar-accent text-sidebar-accent-foreground"
           >
             <item.icon className="h-4 w-4 shrink-0" />
             {!collapsed && <span className="text-sm">{item.title}</span>}
