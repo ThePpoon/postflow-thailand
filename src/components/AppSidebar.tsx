@@ -52,7 +52,7 @@ const postItems = [
 
 const workspaceItems = [
   { title: 'การเชื่อมต่อ', url: '/accounts', icon: Plug },
-  { title: 'ทีม', url: '#', icon: Users },
+  { title: 'ทีม', url: '#', icon: Users, locked: true },
 ];
 
 const configItems = [
