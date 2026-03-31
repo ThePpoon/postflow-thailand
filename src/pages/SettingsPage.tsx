@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Camera, LogOut, Mail, Lock, Shield } from 'lucide-react';
+import { Camera, LogOut, Mail, Lock, Shield, Plug, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function SettingsPage() {
@@ -274,6 +274,27 @@ export default function SettingsPage() {
                 ลืมรหัสผ่าน? ส่งลิงก์รีเซ็ต
               </button>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Connected Accounts - visible on mobile */}
+        <Card className="border-border bg-card md:hidden">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <Plug className="h-4 w-4" /> การเชื่อมต่อแพลตฟอร์ม
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <button
+              onClick={() => navigate('/accounts')}
+              className="flex w-full items-center justify-between rounded-lg border border-border bg-secondary/30 px-4 py-3 transition-colors hover:bg-secondary/50"
+            >
+              <div>
+                <p className="text-sm font-medium text-foreground text-left">จัดการบัญชีที่เชื่อมต่อ</p>
+                <p className="text-xs text-muted-foreground text-left">Facebook, Instagram และอื่นๆ</p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </button>
           </CardContent>
         </Card>
 
