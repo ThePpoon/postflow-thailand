@@ -1,4 +1,4 @@
-import { Home, PlusCircle, CalendarDays, List, Settings } from 'lucide-react';
+import { Home, PlusCircle, CalendarDays, List, Plug } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 
 const navItems = [
@@ -6,7 +6,7 @@ const navItems = [
   { title: 'ปฏิทิน', url: '/posts/calendar', icon: CalendarDays },
   { title: 'สร้าง', url: '/posts/new', icon: PlusCircle },
   { title: 'โพสต์', url: '/posts', icon: List },
-  { title: 'ตั้งค่า', url: '/settings', icon: Settings },
+  { title: 'เชื่อมต่อ', url: '/accounts', icon: Plug },
 ];
 
 export function MobileNav() {
