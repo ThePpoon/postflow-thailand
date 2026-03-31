@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Camera, LogOut, Mail, Lock, Shield } from 'lucide-react';
+import { Camera, LogOut, Mail, Lock, Shield, Plug, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function SettingsPage() {
